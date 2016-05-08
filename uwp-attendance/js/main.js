@@ -13,12 +13,12 @@
                 // Restore application state here.
             }
             args.setPromise(WinJS.UI.processAll().then(function () {
-                $("#checkinButton").on("click", function () {
+                $("#checkinButton").click(function () {
                     checkinButtonClickHandler();
                 });
 
                 // if enter key selected on #personID input
-                $("#personID").on("keydown", function (e) {
+                $("#personID").keydown(function (e) {
                     if (e.keyCode == 13) {
                         checkinButtonClickHandler();
                     }
