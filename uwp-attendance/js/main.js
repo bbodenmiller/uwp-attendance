@@ -13,6 +13,15 @@
                 // Restore application state here.
             }
             args.setPromise(WinJS.UI.processAll().then(function () {
+                $("#secureID").keydown(function (e) {
+                    // F7 or enter key indicate end of scan
+                    if (e.keyCode == 118 || e.keyCode == 13) {
+                        //checkinButtonClickHandler();
+                        $("#greetingOutput").text($("#secureID").val());
+                        $("#secureID").val("");
+                    }
+                });
+
                 $("#checkinButton").click(function () {
                     checkinButtonClickHandler();
                 });
