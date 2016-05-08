@@ -13,9 +13,16 @@
                 // Restore application state here.
             }
             args.setPromise(WinJS.UI.processAll().then(function () {
-                // Retrieve the button and register our event handler
-                var checkinButton = document.getElementById("checkinButton");
-                checkinButton.addEventListener("click", checkinButtonClickHandler, false);
+                $("#checkinButton").on("click", function () {
+                    checkinButtonClickHandler();
+                });
+
+                // if enter key selected on #personID input
+                $("#personID").on("keydown", function (e) {
+                    if (e.keyCode == 13) {
+                        checkinButtonClickHandler();
+                    }
+                });
             }));
         }
     };
@@ -27,9 +34,11 @@
     };
 
     function checkinButtonClickHandler(eventInfo) {
-        var employeeID = document.getElementById("employeeID").value;
-        var greetingString = "Hello, " + employeeID + "!";
-        document.getElementById("greetingOutput").innerText = greetingString;
+        var person = $("#personID").val();
+        var greetingString = "Hello, " + person + "!";
+        $("#greetingOutput").text(greetingString);
+        $("#personID").val("");
+        $("#secureID").focus();
     }
 
     app.start();
