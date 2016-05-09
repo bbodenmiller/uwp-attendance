@@ -17,9 +17,7 @@
                 $("#secureID").keydown(function (e) {
                     // F7 or enter key indicate end of scan
                     if (e.keyCode == 118 || e.keyCode == 13) {
-                        //checkinButtonClickHandler();
-                        $("#greetingOutput").text($("#secureID").val());
-                        $("#secureID").val("");
+                        checkinBadgeHandler();
                     }
                 });
                 //#endregion
@@ -46,12 +44,22 @@
         // If you need to complete an asynchronous operation before your application is suspended, call args.setPromise().
     };
 
+    function welcomeGreeting(name) {
+        var greetingString = "Hello, " + name + "!";
+        $("#greetingOutput").text(greetingString);
+    }
+
     function checkinButtonClickHandler(eventInfo) {
         var person = $("#personID").val();
-        var greetingString = "Hello, " + person + "!";
-        $("#greetingOutput").text(greetingString);
         $("#personID").val("");
+        welcomeGreeting(person);
         $("#secureID").focus();
+    }
+
+    function checkinBadgeHandler() {
+        var person = $("#secureID").val();
+        $("#secureID").val("");
+        welcomeGreeting(person);
     }
 
     app.start();
