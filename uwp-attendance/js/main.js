@@ -80,7 +80,9 @@
     function checkinBadgeHandler() {
         var secureID = $("#secureID").val();
         if (secureID) { //if valid, e.g. non-blank
-            var person = $("#secureID").val();
+            var person = secureID; //todo: lookup person
+            var personID = null; //todo: lookup personID
+            saveCheckin(personID, secureID);
             welcomeGreeting(person);
         } else {
             errorGreeting();
@@ -90,7 +92,8 @@
     function checkinButtonClickHandler(eventInfo) {
         var personID = $("#personID").val();
         if (personID) { //if valid, e.g. non-blank
-            var person = personID;
+            var person = personID; //todo: lookup person
+            saveCheckin(personID);
             welcomeGreeting(person);
         } else {
             errorGreeting();
