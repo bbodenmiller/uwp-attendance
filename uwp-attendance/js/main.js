@@ -44,21 +44,36 @@
         // If you need to complete an asynchronous operation before your application is suspended, call args.setPromise().
     };
 
+    var clearGreetingOutputTimer;
+
     function resetInputs() {
         $("#personID").val("");
         $("#secureID").val("");
         $("#secureID").focus();
     }
 
+    function greetingOutput(string) {
+        //remove timer to clear last set greeting
+        clearTimeout(clearGreetingOutputTimer);
+
+        //set greeting
+        $("#greetingOutput").text(string);
+
+        //set timer to clear greeting
+        clearGreetingOutputTimer = setTimeout(function () {
+            $("#greetingOutput").text("");
+        }, 5000);
+    }
+
     function welcomeGreeting(name) {
         var greetingString = "Hello, " + name + "!";
-        $("#greetingOutput").text(greetingString);
+        greetingOutput(greetingString);
         resetInputs();
     }
 
     function errorGreeting() {
         var errorString = "An error has occurred, please try again";
-        $("#greetingOutput").text(errorString);
+        greetingOutput(errorString);
         resetInputs();
     }
 
