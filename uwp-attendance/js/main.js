@@ -45,20 +45,20 @@
     };
 
     function welcomeGreeting(name) {
+        $("#personID").val("");
+        $("#secureID").val("");
         var greetingString = "Hello, " + name + "!";
         $("#greetingOutput").text(greetingString);
+        $("#secureID").focus();
     }
 
     function checkinButtonClickHandler(eventInfo) {
         var person = $("#personID").val();
-        $("#personID").val("");
         welcomeGreeting(person);
-        $("#secureID").focus();
     }
 
     function checkinBadgeHandler() {
         var person = $("#secureID").val();
-        $("#secureID").val("");
         welcomeGreeting(person);
     }
 
