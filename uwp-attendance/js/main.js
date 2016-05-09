@@ -13,6 +13,7 @@
                 // Restore application state here.
             }
             args.setPromise(WinJS.UI.processAll().then(function () {
+                //#region scan badge handler
                 $("#secureID").keydown(function (e) {
                     // F7 or enter key indicate end of scan
                     if (e.keyCode == 118 || e.keyCode == 13) {
@@ -21,7 +22,9 @@
                         $("#secureID").val("");
                     }
                 });
+                //#endregion
 
+                //#region manual check-in handlers
                 $("#checkinButton").click(function () {
                     checkinButtonClickHandler();
                 });
@@ -32,6 +35,7 @@
                         checkinButtonClickHandler();
                     }
                 });
+                //#endregion
             }));
         }
     };
