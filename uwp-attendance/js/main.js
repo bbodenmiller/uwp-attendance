@@ -62,20 +62,20 @@
         resetInputs();
     }
 
-    function checkinButtonClickHandler(eventInfo) {
-        var personID = $("#personID").val();
-        if (personID) { //if valid, e.g. non-blank
-            var person = personID;
+    function checkinBadgeHandler() {
+        var secureID = $("#secureID").val();
+        if (secureID) { //if valid, e.g. non-blank
+            var person = $("#secureID").val();
             welcomeGreeting(person);
         } else {
             errorGreeting();
         }
     }
 
-    function checkinBadgeHandler() {
-        var secureID = $("#secureID").val();
-        if (secureID) { //if valid, e.g. non-blank
-            var person = $("#secureID").val();
+    function checkinButtonClickHandler(eventInfo) {
+        var personID = $("#personID").val();
+        if (personID) { //if valid, e.g. non-blank
+            var person = personID;
             welcomeGreeting(person);
         } else {
             errorGreeting();
