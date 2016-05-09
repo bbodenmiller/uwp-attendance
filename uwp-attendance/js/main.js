@@ -44,22 +44,42 @@
         // If you need to complete an asynchronous operation before your application is suspended, call args.setPromise().
     };
 
-    function welcomeGreeting(name) {
+    function resetInputs() {
         $("#personID").val("");
         $("#secureID").val("");
-        var greetingString = "Hello, " + name + "!";
-        $("#greetingOutput").text(greetingString);
         $("#secureID").focus();
     }
 
+    function welcomeGreeting(name) {
+        var greetingString = "Hello, " + name + "!";
+        $("#greetingOutput").text(greetingString);
+        resetInputs();
+    }
+
+    function errorGreeting() {
+        var errorString = "An error has occurred, please try again";
+        $("#greetingOutput").text(errorString);
+        resetInputs();
+    }
+
     function checkinButtonClickHandler(eventInfo) {
-        var person = $("#personID").val();
-        welcomeGreeting(person);
+        var personID = $("#personID").val();
+        if (personID) { //if valid, e.g. non-blank
+            var person = personID;
+            welcomeGreeting(person);
+        } else {
+            errorGreeting();
+        }
     }
 
     function checkinBadgeHandler() {
-        var person = $("#secureID").val();
-        welcomeGreeting(person);
+        var secureID = $("#secureID").val();
+        if (secureID) { //if valid, e.g. non-blank
+            var person = $("#secureID").val();
+            welcomeGreeting(person);
+        } else {
+            errorGreeting();
+        }
     }
 
     app.start();
