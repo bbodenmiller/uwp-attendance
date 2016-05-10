@@ -92,10 +92,22 @@
             });
     }
 
+    function startCheckIn() {
+        $("progress").show();
+        $("#secureID").prop('readonly', true);
+        $("#personID").prop('readonly', true);
+    }
+
+    function endCheckIn() {
+        $("progress").hide();
+        $("#secureID").prop('readonly', false);
+        $("#personID").prop('readonly', false);
+    }
+
     function checkInBadgeHandler() {
+        startCheckIn();
         var secureID = $("#secureID").val();
         if (secureID && $.isNumeric(secureID)) { //if valid, e.g. non-blank
-            $("progress").show();
             getPersonDetailsBySecureID(secureID)
                 .then(function (person) {
                     var personID = null;
@@ -111,23 +123,24 @@
 
                     saveCheckIn(personID, secureID)
                         .then(function () {
-                            $("progress").hide();
+                            endCheckIn();
                             updateCheckedInCount();
                             welcomeGreeting(name);
                         }, function () {
-                            $("progress").hide();
+                            endCheckIn();
                             errorFileIOGreeting();
                         });
                 });
         } else {
+            endCheckIn();
             errorGreeting();
         }
     }
 
     function checkInButtonClickHandler(eventInfo) {
+        startCheckIn();
         var personID = $("#personID").val();
         if (personID && $.isNumeric(personID)) { //if valid, e.g. non-blank
-            $("progress").show();
             getPersonDetailsByPersonID(personID)
                 .then(function (person) {
                     var name = "Unknown";
@@ -138,15 +151,16 @@
 
                     saveCheckIn(personID)
                         .then(function () {
-                            $("progress").hide();
+                            endCheckIn();
                             updateCheckedInCount();
                             welcomeGreeting(name);
                         }, function () {
-                            $("progress").hide();
+                            endCheckIn();
                             errorFileIOGreeting();
                         });
                 });
         } else {
+            endCheckIn();
             errorGreeting();
         }
     }
