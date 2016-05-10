@@ -88,7 +88,7 @@
 
     function checkInBadgeHandler() {
         var secureID = $("#secureID").val();
-        if (secureID) { //if valid, e.g. non-blank
+        if (secureID && $.isNumeric(secureID)) { //if valid, e.g. non-blank
             var person = secureID; //todo: lookup person
             var personID = null; //todo: lookup personID
             saveCheckIn(personID, secureID).then(function () {
@@ -102,7 +102,7 @@
 
     function checkInButtonClickHandler(eventInfo) {
         var personID = $("#personID").val();
-        if (personID) { //if valid, e.g. non-blank
+        if (personID && $.isNumeric(personID)) { //if valid, e.g. non-blank
             var person = personID; //todo: lookup person
             saveCheckIn(personID).then(function () {
                 updateCheckedInCount();
