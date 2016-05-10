@@ -26,7 +26,7 @@ function checkedInStatus(personID, secureID) {
         });
 }
 
-function saveCheckin(personID, secureID) {
+function saveCheckIn(personID, secureID) {
     //if already checked in don't save again
     return checkedInStatus(personID, secureID).then(function (isCheckedIn) {
         if (isCheckedIn) {

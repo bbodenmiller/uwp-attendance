@@ -17,7 +17,7 @@
                 $("#secureID").keydown(function (e) {
                     // F7 or enter key indicate end of scan
                     if (e.keyCode == 118 || e.keyCode == 13) {
-                        checkinBadgeHandler();
+                        checkInBadgeHandler();
                     }
                 });
                 //#endregion
@@ -86,12 +86,12 @@
             });
     }
 
-    function checkinBadgeHandler() {
+    function checkInBadgeHandler() {
         var secureID = $("#secureID").val();
         if (secureID) { //if valid, e.g. non-blank
             var person = secureID; //todo: lookup person
             var personID = null; //todo: lookup personID
-            saveCheckin(personID, secureID).then(function () {
+            saveCheckIn(personID, secureID).then(function () {
                 updateCheckedInCount();
                 welcomeGreeting(person);
             });
@@ -104,7 +104,7 @@
         var personID = $("#personID").val();
         if (personID) { //if valid, e.g. non-blank
             var person = personID; //todo: lookup person
-            saveCheckin(personID).then(function () {
+            saveCheckIn(personID).then(function () {
                 updateCheckedInCount();
                 welcomeGreeting(person);
             });
