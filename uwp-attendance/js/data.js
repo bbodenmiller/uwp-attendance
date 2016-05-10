@@ -28,7 +28,7 @@ function checkedInStatus(personID, secureID) {
 
 function saveCheckin(personID, secureID) {
     //if already checked in don't save again
-    checkedInStatus(personID, secureID).then(function (isCheckedIn) {
+    return checkedInStatus(personID, secureID).then(function (isCheckedIn) {
         if (isCheckedIn) {
             return;
         } else {
@@ -41,9 +41,8 @@ function saveCheckin(personID, secureID) {
             return localFolder.createFileAsync(filename, Windows.Storage.CreationCollisionOption.openIfExists)
                 .then(function (file) {
                     return Windows.Storage.FileIO.appendTextAsync(file, personInfo + "\n");
-                }).done();
+                });
         }
-
     });
 }
 
