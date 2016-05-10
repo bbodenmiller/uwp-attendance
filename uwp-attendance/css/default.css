@@ -1,2 +1,9 @@
-﻿body {
+﻿.contenttext {
+    margin-left: 20px;
+    margin-top: 6px;
+}
+
+.title {
+    padding-bottom: 10px;
+    font-weight: bold;
 }

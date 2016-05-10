@@ -17,13 +17,13 @@
     <script src="js/data.js"></script>
     <script src="js/main.js"></script>
 </head>
-<body class="win-type-body">
-    <h1>Welcome, please check-in!</h1>
-    <p>Scan your {badge}</p>
-    <input id="secureID" type="password" autofocus />
-    <p>Or enter your {person ID}</p>
-    <input id="personID" type="number" />
-    <button id="checkinButton">Check-in</button>
-    <h1 id="greetingOutput"></h1>
+<body class="win-type-body contenttext">
+    <h1 class="win-h1 title">Welcome to the {event}!</h1>
+    <h2 class="win-h2">Please check-in by scanning your {badge}</h2>
+    <input class="win-textbox" id="secureID" type="password" autofocus />
+    <h2 class="win-h2">Or entering your {person ID} below</h2>
+    <input class="win-textbox" id="personID" type="number" />
+    <button class="win-button" id="checkinButton">Check-in</button>
+    <h2 class="win-h2" id="greetingOutput"></h2>
 </body>
 </html>
