@@ -95,14 +95,27 @@
     function checkInBadgeHandler() {
         var secureID = $("#secureID").val();
         if (secureID && $.isNumeric(secureID)) { //if valid, e.g. non-blank
-            var person = secureID; //todo: lookup person
-            var personID = null; //todo: lookup personID
-            saveCheckIn(personID, secureID).then(function () {
-                updateCheckedInCount();
-                welcomeGreeting(person);
-            }, function () {
-                errorFileIOGreeting();
-            });
+            getPersonDetailsBySecureID(secureID)
+                .then(function (person) {
+                    var personID = null;
+                    var name = "Unknown";
+
+                    if (person && person.personID) {
+                        personID = person.personID;
+                    }
+
+                    if (person && person.name) {
+                        name = person.name;
+                    }
+
+                    saveCheckIn(personID, secureID)
+                        .then(function () {
+                            updateCheckedInCount();
+                            welcomeGreeting(name);
+                        }, function () {
+                            errorFileIOGreeting();
+                        });
+                });
         } else {
             errorGreeting();
         }
@@ -111,13 +124,22 @@
     function checkInButtonClickHandler(eventInfo) {
         var personID = $("#personID").val();
         if (personID && $.isNumeric(personID)) { //if valid, e.g. non-blank
-            var person = personID; //todo: lookup person
-            saveCheckIn(personID).then(function () {
-                updateCheckedInCount();
-                welcomeGreeting(person);
-            }, function () {
-                errorFileIOGreeting();
-            });
+            getPersonDetailsByPersonID(personID)
+                .then(function (person) {
+                    var name = "Unknown";
+
+                    if (person && person.name) {
+                        name = person.name;
+                    }
+
+                    saveCheckIn(personID)
+                        .then(function () {
+                            updateCheckedInCount();
+                            welcomeGreeting(name);
+                        }, function () {
+                            errorFileIOGreeting();
+                        });
+                });
         } else {
             errorGreeting();
         }

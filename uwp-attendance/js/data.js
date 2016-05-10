@@ -3,6 +3,43 @@
 var applicationData = Windows.Storage.ApplicationData.current;
 var localFolder = applicationData.localFolder;
 var filename = "checkins.csv";
+var dataFilename = "data.csv";
+
+function getPersonDetails(locator) {
+    return localFolder.createFileAsync(dataFilename, Windows.Storage.CreationCollisionOption.openIfExists)
+        .then(function (file) {
+            return Windows.Storage.FileIO.readLinesAsync(file)
+                .then(function (lines) {
+                    for (var i = 0; i < lines.length; i++) {
+                        if (lines[i].indexOf(locator) >= 0) {
+                            //found person details
+                            //return person details
+                            var temp = lines[i].split(",");
+                            var person = {};
+                            person.personID = temp[0];
+                            person.name = temp[1];
+                            person.secureID = temp[2];
+
+                            return person;
+                        }
+                    }
+
+                    return;
+                });
+        });
+}
+
+function getPersonDetailsByPersonID(personID) {
+    var locator = personID + ",";
+
+    return getPersonDetails(locator);
+}
+
+function getPersonDetailsBySecureID(secureID) {
+    var locator = "," + secureID;
+
+    return getPersonDetails(locator);
+}
 
 function checkedInStatus(personID, secureID) {
     if (personID) {
