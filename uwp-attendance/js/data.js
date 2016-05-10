@@ -11,7 +11,7 @@ function getPersonDetails(locator) {
             return Windows.Storage.FileIO.readLinesAsync(file)
                 .then(function (lines) {
                     for (var i = 0; i < lines.length; i++) {
-                        if (lines[i].indexOf(locator) >= 0) {
+                        if (lines[i].substring(0, locator.length) === locator || lines[i].substr(-locator.length) === locator) {
                             //found person details
                             //return person details
                             var temp = lines[i].split(",");
@@ -30,13 +30,13 @@ function getPersonDetails(locator) {
 }
 
 function getPersonDetailsByPersonID(personID) {
-    var locator = "\n" + personID + ",";
+    var locator = personID + ",";
 
     return getPersonDetails(locator);
 }
 
 function getPersonDetailsBySecureID(secureID) {
-    var locator = "," + secureID + "\n";
+    var locator = "," + secureID;
 
     return getPersonDetails(locator);
 }
