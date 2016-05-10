@@ -34,6 +34,8 @@
                     }
                 });
                 //#endregion
+
+                updateCheckedInCount();
             }));
         }
     };
@@ -77,12 +79,21 @@
         resetInputs();
     }
 
+    function updateCheckedInCount() {
+        checkedInCount()
+            .then(function (count) {
+                $("#checkedInCount").text(count);
+            });
+    }
+
     function checkinBadgeHandler() {
         var secureID = $("#secureID").val();
         if (secureID) { //if valid, e.g. non-blank
             var person = secureID; //todo: lookup person
             var personID = null; //todo: lookup personID
             saveCheckin(personID, secureID);
+            //todo: move these to then section of saveCheckin
+            updateCheckedInCount();
             welcomeGreeting(person);
         } else {
             errorGreeting();
@@ -94,6 +105,8 @@
         if (personID) { //if valid, e.g. non-blank
             var person = personID; //todo: lookup person
             saveCheckin(personID);
+            //todo: move these to then section of saveCheckin
+            updateCheckedInCount();
             welcomeGreeting(person);
         } else {
             errorGreeting();

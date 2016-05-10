@@ -46,3 +46,17 @@ function saveCheckin(personID, secureID) {
 
     });
 }
+
+function checkedInCount() {
+    return localFolder.createFileAsync(filename, Windows.Storage.CreationCollisionOption.openIfExists)
+        .then(function (file) {
+            return Windows.Storage.FileIO.readTextAsync(file)
+                .then(function (fileContents) {
+                    fileContents = fileContents.toLowerCase();
+                    if (fileContents.substr(-1) !== "\n" && fileContents) {
+                        fileContents += "\n";
+                    }
+                    return countOccurrences(fileContents, "\n");
+                });
+        });
+}
