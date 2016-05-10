@@ -95,6 +95,7 @@
     function checkInBadgeHandler() {
         var secureID = $("#secureID").val();
         if (secureID && $.isNumeric(secureID)) { //if valid, e.g. non-blank
+            $("progress").show();
             getPersonDetailsBySecureID(secureID)
                 .then(function (person) {
                     var personID = null;
@@ -110,9 +111,11 @@
 
                     saveCheckIn(personID, secureID)
                         .then(function () {
+                            $("progress").hide();
                             updateCheckedInCount();
                             welcomeGreeting(name);
                         }, function () {
+                            $("progress").hide();
                             errorFileIOGreeting();
                         });
                 });
@@ -124,6 +127,7 @@
     function checkInButtonClickHandler(eventInfo) {
         var personID = $("#personID").val();
         if (personID && $.isNumeric(personID)) { //if valid, e.g. non-blank
+            $("progress").show();
             getPersonDetailsByPersonID(personID)
                 .then(function (person) {
                     var name = "Unknown";
@@ -134,9 +138,11 @@
 
                     saveCheckIn(personID)
                         .then(function () {
+                            $("progress").hide();
                             updateCheckedInCount();
                             welcomeGreeting(name);
                         }, function () {
+                            $("progress").hide();
                             errorFileIOGreeting();
                         });
                 });
