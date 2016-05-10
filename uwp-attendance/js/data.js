@@ -54,6 +54,7 @@ function checkedInStatus(personID, secureID) {
             return Windows.Storage.FileIO.readTextAsync(file)
                 .then(function (fileContents) {
                     fileContents = fileContents.toLowerCase();
+                    //todo: change to search beginning and end of line, which would fix #13
                     if ((personID && fileContents.indexOf(personID) >= 0) || (secureID && fileContents.indexOf(secureID) >= 0)) {
                         return true;
                     } else {
