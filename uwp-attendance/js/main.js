@@ -23,14 +23,14 @@
                 //#endregion
 
                 //#region manual check-in handlers
-                $("#checkinButton").click(function () {
-                    checkinButtonClickHandler();
+                $("#checkInButton").click(function () {
+                    checkInButtonClickHandler();
                 });
 
                 // if enter key selected on #personID input
                 $("#personID").keydown(function (e) {
                     if (e.keyCode == 13) {
-                        checkinButtonClickHandler();
+                        checkInButtonClickHandler();
                     }
                 });
                 //#endregion
@@ -89,7 +89,7 @@
         }
     }
 
-    function checkinButtonClickHandler(eventInfo) {
+    function checkInButtonClickHandler(eventInfo) {
         var personID = $("#personID").val();
         if (personID) { //if valid, e.g. non-blank
             var person = personID; //todo: lookup person
