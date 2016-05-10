@@ -79,6 +79,12 @@
         resetInputs();
     }
 
+    function errorFileIOGreeting() {
+        var errorString = "A file IO error has occurred, please try again";
+        greetingOutput(errorString);
+        resetInputs();
+    }
+
     function updateCheckedInCount() {
         checkedInCount()
             .then(function (count) {
@@ -94,6 +100,8 @@
             saveCheckIn(personID, secureID).then(function () {
                 updateCheckedInCount();
                 welcomeGreeting(person);
+            }, function () {
+                errorFileIOGreeting();
             });
         } else {
             errorGreeting();
@@ -107,6 +115,8 @@
             saveCheckIn(personID).then(function () {
                 updateCheckedInCount();
                 welcomeGreeting(person);
+            }, function () {
+                errorFileIOGreeting();
             });
         } else {
             errorGreeting();
