@@ -30,20 +30,20 @@ function getPersonDetails(locator) {
 }
 
 function getPersonDetailsByPersonID(personID) {
-    var locator = personID + ",";
+    var locator = "\n" + personID + ",";
 
     return getPersonDetails(locator);
 }
 
 function getPersonDetailsBySecureID(secureID) {
-    var locator = "," + secureID;
+    var locator = "," + secureID + "\n";
 
     return getPersonDetails(locator);
 }
 
 function checkedInStatus(personID, secureID) {
     if (personID) {
-        personID = personID.toLowerCase() + ",";
+        personID = "\n" + personID.toLowerCase() + ",";
     }
     if (secureID) {
         secureID = "," + secureID.toLowerCase() + "\n";
@@ -92,7 +92,7 @@ function checkedInCount() {
                     if (fileContents.substr(-1) !== "\n" && fileContents) {
                         fileContents += "\n";
                     }
-                    return countOccurrences(fileContents, "\n");
+                    return countOccurrences(fileContents, "\n") - 1;
                 });
         });
 }
