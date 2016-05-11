@@ -43,23 +43,23 @@ function getPersonDetailsBySecureID(secureID) {
 
 function checkedInStatus(personID, secureID) {
     if (personID) {
-        personID = "\n" + personID.toLowerCase() + ",";
+        personID = personID + ",";
     }
     if (secureID) {
-        secureID = "," + secureID.toLowerCase() + "\n";
+        secureID = "," + secureID;
     }
 
     return localFolder.createFileAsync(filename, Windows.Storage.CreationCollisionOption.openIfExists)
         .then(function (file) {
-            return Windows.Storage.FileIO.readTextAsync(file)
-                .then(function (fileContents) {
-                    fileContents = fileContents.toLowerCase();
-                    //todo: change to search beginning and end of line, which would fix #13
-                    if ((personID && fileContents.indexOf(personID) >= 0) || (secureID && fileContents.indexOf(secureID) >= 0)) {
-                        return true;
-                    } else {
-                        return false;
+            return Windows.Storage.FileIO.readLinesAsync(file)
+                .then(function (lines) {
+                    for (var i = 0; i < lines.length; i++) {
+                        if ((personID && lines[i].substring(0, personID.length) === personID) || (secureID && lines[i].substr(-secureID.length) === secureID)) {
+                            return true;
+                        }
                     }
+
+                    return false;
                 });
         });
 }
@@ -93,7 +93,7 @@ function checkedInCount() {
                     if (fileContents.substr(-1) !== "\n" && fileContents) {
                         fileContents += "\n";
                     }
-                    return countOccurrences(fileContents, "\n") - 1;
+                    return countOccurrences(fileContents, "\n");
                 });
         });
 }
