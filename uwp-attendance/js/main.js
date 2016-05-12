@@ -36,6 +36,27 @@
                 //#endregion
 
                 updateCheckedInCount();
+
+                //#region rotate logos
+                new WinJS.Promise(function (complete, error, progress) {
+                    var logos = [];
+                    var logoURL;
+                    var oldLogoURL;
+                    logos.push("ms-appdata:///local/logo.png");
+                    logos.push("ms-appdata:///local/logo2.png");
+                    logos.push("ms-appdata:///local/logo3.png");
+
+                    setInterval(function () {
+                        //get random logo URL (but not same as last one)
+                        oldLogoURL = logoURL;
+                        do {
+                            logoURL = logos[Math.floor(Math.random() * logos.length)];
+                        } while (logoURL === oldLogoURL);
+
+                        $(".logo").attr('src', logoURL);
+                    }, 15000);
+                });
+                //#endregion
             }));
         }
     };
