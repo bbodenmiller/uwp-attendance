@@ -1,6 +1,8 @@
 ﻿(function () {
     'use strict';
 
+    var checkInProcessing;
+
     var app = WinJS.Application;
     var activation = Windows.ApplicationModel.Activation;
 
@@ -16,7 +18,7 @@
                 //#region scan badge handler
                 $("#secureID").keydown(function (e) {
                     // F7 or enter key indicate end of scan
-                    if (e.keyCode == 118 || e.keyCode == 13) {
+                    if (!checkInProcessing && (e.keyCode == 118 || e.keyCode == 13)) {
                         checkInBadgeHandler();
                     }
                 });
@@ -24,12 +26,14 @@
 
                 //#region manual check-in handlers
                 $("#checkInButton").click(function () {
-                    checkInButtonClickHandler();
+                    if (!checkInProcessing) {
+                        checkInButtonClickHandler();
+                    }
                 });
 
                 // if enter key selected on #personID input
                 $("#personID").keydown(function (e) {
-                    if (e.keyCode == 13) {
+                    if (!checkInProcessing && e.keyCode == 13) {
                         checkInButtonClickHandler();
                     }
                 });
@@ -113,16 +117,25 @@
             });
     }
 
+    function preventTyping(e) {
+        e.preventDefault();
+        return false;
+    }
+
     function startCheckIn() {
+        checkInProcessing = true;
+        $("#secureID").keydown(preventTyping);
+        $("#personID").keydown(preventTyping);
+
         $("progress").show();
-        $("#secureID").prop('readonly', true);
-        $("#personID").prop('readonly', true);
     }
 
     function endCheckIn() {
         $("progress").hide();
-        $("#secureID").prop('readonly', false);
-        $("#personID").prop('readonly', false);
+
+        $("#secureID").unbind('keydown', preventTyping);
+        $("#personID").unbind('keydown', preventTyping);
+        checkInProcessing = false;
     }
 
     function checkInBadgeHandler() {
@@ -143,18 +156,18 @@
                     }
 
                     saveCheckIn(personID, secureID)
-                        .then(function () {
+                        .then(function () {                            
+                            welcomeGreeting(name);
                             endCheckIn();
                             updateCheckedInCount();
-                            welcomeGreeting(name);
                         }, function () {
-                            endCheckIn();
                             errorFileIOGreeting();
+                            endCheckIn();
                         });
                 });
         } else {
-            endCheckIn();
             errorGreeting();
+            endCheckIn();
         }
     }
 
@@ -172,12 +185,12 @@
 
                     saveCheckIn(personID)
                         .then(function () {
-                            endCheckIn();
-                            updateCheckedInCount();
                             welcomeGreeting(name);
-                        }, function () {
                             endCheckIn();
+                            updateCheckedInCount();                            
+                        }, function () {
                             errorFileIOGreeting();
+                            endCheckIn();                            
                         });
                 });
         } else {
