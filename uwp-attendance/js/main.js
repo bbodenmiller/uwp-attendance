@@ -156,7 +156,7 @@
                     }
 
                     saveCheckIn(personID, secureID)
-                        .then(function () {                            
+                        .then(function () {
                             welcomeGreeting(name);
                             endCheckIn();
                             updateCheckedInCount();
@@ -187,10 +187,10 @@
                         .then(function () {
                             welcomeGreeting(name);
                             endCheckIn();
-                            updateCheckedInCount();                            
+                            updateCheckedInCount();
                         }, function () {
                             errorFileIOGreeting();
-                            endCheckIn();                            
+                            endCheckIn();
                         });
                 });
         } else {
