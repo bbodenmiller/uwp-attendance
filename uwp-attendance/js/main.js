@@ -111,7 +111,7 @@
     }
 
     function updateCheckedInCount() {
-        checkedInCount()
+        getCheckedInCount()
             .then(function (count) {
                 $("#checkedInCount").text(count);
             });

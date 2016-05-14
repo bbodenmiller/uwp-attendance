@@ -41,7 +41,7 @@ function getPersonDetailsBySecureID(secureID) {
     return getPersonDetails(locator);
 }
 
-function checkedInStatus(personID, secureID) {
+function getCheckedInStatus(personID, secureID) {
     if (personID) {
         personID = personID + ",";
     }
@@ -66,7 +66,7 @@ function checkedInStatus(personID, secureID) {
 
 function saveCheckIn(personID, secureID) {
     //if already checked in don't save again
-    return checkedInStatus(personID, secureID).then(function (isCheckedIn) {
+    return getCheckedInStatus(personID, secureID).then(function (isCheckedIn) {
         if (isCheckedIn) {
             return;
         } else {
@@ -84,7 +84,7 @@ function saveCheckIn(personID, secureID) {
     });
 }
 
-function checkedInCount() {
+function getCheckedInCount() {
     return localFolder.createFileAsync(filename, Windows.Storage.CreationCollisionOption.openIfExists)
         .then(function (file) {
             return Windows.Storage.FileIO.readTextAsync(file)
