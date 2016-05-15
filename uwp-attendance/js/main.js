@@ -1,8 +1,6 @@
 ﻿(function () {
     'use strict';
 
-    var checkInProcessing;
-
     var app = WinJS.Application;
     var activation = Windows.ApplicationModel.Activation;
 
@@ -18,7 +16,7 @@
                 //#region scan badge handler
                 $("#secureID").keydown(function (e) {
                     // F7 or enter key indicate end of scan
-                    if (!checkInProcessing && (e.keyCode == 118 || e.keyCode == 13)) {
+                    if (e.keyCode == 118 || e.keyCode == 13) {
                         checkInBadgeHandler();
                     }
                 });
@@ -26,14 +24,12 @@
 
                 //#region manual check-in handlers
                 $("#checkInButton").click(function () {
-                    if (!checkInProcessing) {
-                        checkInButtonClickHandler();
-                    }
+                    checkInButtonClickHandler();
                 });
 
                 // if enter key selected on #personID input
                 $("#personID").keydown(function (e) {
-                    if (!checkInProcessing && e.keyCode == 13) {
+                    if (e.keyCode == 13) {
                         checkInButtonClickHandler();
                     }
                 });
@@ -71,7 +67,7 @@
         // If you need to complete an asynchronous operation before your application is suspended, call args.setPromise().
     };
 
-    var clearGreetingOutputTimer;
+    var checkInProcessingCount = 0;
 
     function resetInputs() {
         $("#personID").val("");
@@ -79,35 +75,41 @@
         $("#secureID").focus();
     }
 
-    function greetingOutput(string) {
-        //remove timer to clear last set greeting
-        clearTimeout(clearGreetingOutputTimer);
+    function startCheckIn() {
+        //increment for check-in
+        checkInProcessingCount++;
 
-        //set greeting
-        $("#greetingOutput").text(string);
+        $("body").append('<div id="checkIn-' + checkInProcessingCount + '">\
+                <progress class="win-progress"></progress>\
+            </div>');
+    }
 
+    function endCheckIn(count) {
         //set timer to clear greeting
-        clearGreetingOutputTimer = setTimeout(function () {
-            $("#greetingOutput").text("");
+        setTimeout(function () {
+            $("#checkIn-" + count).remove();
         }, 5000);
     }
 
-    function welcomeGreeting(name) {
+    function greetingOutput(string, count) {
+        //set greeting
+        $("#checkIn-" + count).html('<h2 class="win-h2 greeting">' + string + '</h2>');
+        endCheckIn(count);
+    }
+
+    function welcomeGreeting(name, count) {
         var greetingString = "Hello, " + name + "!";
-        greetingOutput(greetingString);
-        resetInputs();
+        greetingOutput(greetingString, count);
     }
 
-    function errorGreeting() {
+    function errorGreeting(count) {
         var errorString = "An error has occurred, please try again";
-        greetingOutput(errorString);
-        resetInputs();
+        greetingOutput(errorString, count);
     }
 
-    function errorFileIOGreeting() {
+    function errorFileIOGreeting(count) {
         var errorString = "A file IO error has occurred, please try again";
-        greetingOutput(errorString);
-        resetInputs();
+        greetingOutput(errorString, count);
     }
 
     function updateCheckedInCount() {
@@ -122,25 +124,21 @@
         return false;
     }
 
-    function startCheckIn() {
-        checkInProcessing = true;
+    function lockInputs() {
         $("#secureID").keydown(preventTyping);
         $("#personID").keydown(preventTyping);
-
-        $("progress").show();
     }
 
-    function endCheckIn() {
-        $("progress").hide();
-
+    function unlockInputs() {
         $("#secureID").unbind('keydown', preventTyping);
         $("#personID").unbind('keydown', preventTyping);
-        checkInProcessing = false;
     }
 
     function checkInBadgeHandler() {
+        lockInputs();
         startCheckIn();
         var secureID = $("#secureID").val();
+        var count = checkInProcessingCount;
         if (secureID && $.isNumeric(secureID)) { //if valid, e.g. non-blank
             getPersonDetailsBySecureID(secureID)
                 .then(function (person) {
@@ -157,23 +155,24 @@
 
                     saveCheckIn(personID, secureID)
                         .then(function () {
-                            welcomeGreeting(name);
-                            endCheckIn();
+                            welcomeGreeting(name, count);
                             updateCheckedInCount();
                         }, function () {
-                            errorFileIOGreeting();
-                            endCheckIn();
+                            errorFileIOGreeting(count);
                         });
                 });
         } else {
-            errorGreeting();
-            endCheckIn();
+            errorGreeting(count);
         }
+        resetInputs();
+        unlockInputs();
     }
 
     function checkInButtonClickHandler(eventInfo) {
+        lockInputs();
         startCheckIn();
         var personID = $("#personID").val();
+        var count = checkInProcessingCount;
         if (personID && $.isNumeric(personID)) { //if valid, e.g. non-blank
             getPersonDetailsByPersonID(personID)
                 .then(function (person) {
@@ -185,18 +184,17 @@
 
                     saveCheckIn(personID)
                         .then(function () {
-                            welcomeGreeting(name);
-                            endCheckIn();
+                            welcomeGreeting(name, count);
                             updateCheckedInCount();
                         }, function () {
-                            errorFileIOGreeting();
-                            endCheckIn();
+                            errorFileIOGreeting(count);
                         });
                 });
         } else {
-            endCheckIn();
-            errorGreeting();
+            errorGreeting(count);
         }
+        resetInputs();
+        unlockInputs();
     }
 
     app.start();

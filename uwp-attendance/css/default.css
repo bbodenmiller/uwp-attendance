@@ -8,7 +8,7 @@
     font-weight: bold;
 }
 
-#greetingOutput {
+.greeting {
     font-weight: bold;
     padding-top: 10px;
 }
@@ -27,8 +27,4 @@
     padding: 10px;
     
     width: 40%;
-}
-
-.hide {
-    display: none;
 }
